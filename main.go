@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
+	"github.com/compose-spec/compose-go/types"
 	"github.com/docker/compose/v2/pkg/plugins"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
@@ -12,9 +14,9 @@ type SecretsHello struct {
 	logger hclog.Logger
 }
 
-func (g *SecretsHello) GetSecret(name string) (string, error) {
+func (g *SecretsHello) GetSecret(config types.SecretConfig) ([]byte, error) {
 	g.logger.Debug("message from SecretsHello.GetSecret")
-	return "Hello!", nil
+	return []byte(fmt.Sprintf("Hello %s!", config.Name)), nil
 }
 
 func main() {
